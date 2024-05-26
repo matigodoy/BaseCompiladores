@@ -5,13 +5,14 @@ package compiladores;
 }
 
 // Definimos los tokens
+SALTO : '\n' ;
 PARIZQ : '(';
 PARDER : ')';
 fragment DIGITO : [0-9] ;
 WS : [ \t\n\r]+ -> skip ;
 COMILLA : '"';
 COMSIMPLE : '\'';
-fragment LETRA : [A-Za-z];
+fragment LETRA : [a-zA-Z] ;
 PUNTOCOMA : ';';
 COMA : ',';
 LLAVEIZQ : '{';
@@ -62,18 +63,21 @@ programa : instrucciones EOF;
 instrucciones : instruccion*;
 
 // Definimos las instrucciones
-instruccion : declaracion
-            | asignacion
-            | ciclo
-            | if
-            | for
-            | funcion
-            | llamadaFuncion
-            | comentario
-            | retorno
+instruccion : declaracion SALTO?
+            | asignacion SALTO?
+            | ciclo SALTO?
+            | if SALTO?
+            | for SALTO?
+            | funcion SALTO?
+            | llamadaFuncion SALTO?
+            | comentario SALTO?
+            | retorno SALTO?
             ;
 
-declaracion : TDATO ID IGUAL (NUMERO | 'true' | 'false') PUNTOCOMA?;
+declaracion : TDATO ID PUNTOCOMA?
+            | TDATO asignacion
+            | TDATO ID COMA
+            ;
 
 asignacion : ID IGUAL expresion
         | ID INCREMENTO PUNTOCOMA?
@@ -126,7 +130,7 @@ retorno : RETURN (ID | NUMERO) PUNTOCOMA
         | RETURN PUNTOCOMA
         ;
 
-bloque : LLAVEIZQ instruccion* LLAVEDER;
+bloque : LLAVEIZQ instruccion LLAVEDER;
 
 ciclo : WHILE PARIZQ condicion PARDER (bloque | instruccion)
         ;
@@ -145,7 +149,7 @@ parametros : (ID | NUMERO) (COMA (ID | NUMERO))*
             |
             ;
 
-funcion : TDATO MAIN PARIZQ PARDER (bloque | instruccion);
+funcion : TDATO MAIN PARIZQ declaracionParametros PARDER (bloque | instruccion);
 
 imprimir : PRINT PARIZQ (COMILLA .*? COMILLA | COMSIMPLE .*? COMSIMPLE) PARDER;
 

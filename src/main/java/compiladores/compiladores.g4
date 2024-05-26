@@ -5,7 +5,6 @@ package compiladores;
 }
 
 // Definimos los tokens
-SALTO : '\n' ;
 PARIZQ : '(';
 PARDER : ')';
 fragment DIGITO : [0-9] ;
@@ -62,15 +61,15 @@ programa : instrucciones EOF;
 instrucciones : instruccion*;
 
 // Definimos las instrucciones
-instruccion : declaracion SALTO?
-            | asignacion SALTO?
-            | ciclo SALTO?
-            | if SALTO?
-            | for SALTO?
-            | funcion SALTO?
-            | llamadaFuncion SALTO?
-            | comentario SALTO?
-            | retorno SALTO?
+instruccion : declaracion
+            | asignacion
+            | ciclo
+            | if
+            | for
+            | funcion
+            | llamadaFuncion
+            | comentario
+            | retorno
             ;
 
 declaracion : TDATO ID PUNTOCOMA?
@@ -154,4 +153,4 @@ imprimir : PRINT PARIZQ (COMILLA .*? COMILLA | COMSIMPLE .*? COMSIMPLE) PARDER;
 
 llamadaFuncion : ID PARIZQ parametros PARDER PUNTOCOMA;
 
-comentario : '//' .*? '\n';
+comentario : '//' .*?;

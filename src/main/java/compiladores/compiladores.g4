@@ -48,7 +48,6 @@ WHILE : 'while';
 FOR : 'for';
 RETURN : 'return';
 TDATO : 'int' | 'float' | 'char' | 'string' | 'bool' | 'double' | 'void' | 'long' | 'short';
-FUNCION : 'function';
 MAIN : 'main';
 PRINT : 'print';
 
@@ -136,3 +135,15 @@ else : ELSE (bloque | instruccion);
 for : FOR PARIZQ ((declaracion | asignacion) | PUNTOCOMA) (condiciones) PUNTOCOMA asignacion? PARDER (bloque | instruccion);
 
 // !TODO: Falta declarar: funcion | imprimir | llamadaFuncion | comentario;
+
+funcion : TDATO ID PARIZQ (declaracion | asignacion)? PARDER (bloque | instruccion);
+
+imprimir : PRINT PARIZQ (COMILLA .*? COMILLA | COMSIMPLE .*? COMSIMPLE) PARDER;
+
+llamadaFuncion : ID PARIZQ parametros PARDER PUNTOCOMA;
+
+parametros : (ID | NUMERO) COMA parametros
+            | (ID | NUMERO)
+            ;
+
+comentario : '//' .*? '\n';

@@ -48,7 +48,6 @@ WHILE : 'while';
 FOR : 'for';
 RETURN : 'return';
 TDATO : 'int' | 'float' | 'char' | 'string' | 'bool' | 'double' | 'void' | 'long' | 'short';
-MAIN : 'main';
 PRINT : 'print';
 
 OPERADOR : SUMA | RESTA | MULTIPLICACION | DIVISION | MODULO;
@@ -149,7 +148,7 @@ parametros : (ID | NUMERO) (COMA (ID | NUMERO))*
             |
             ;
 
-funcion : TDATO MAIN PARIZQ declaracionParametros PARDER (bloque | instruccion);
+funcion : TDATO ID PARIZQ declaracionParametros PARDER (bloque | instruccion);
 
 imprimir : PRINT PARIZQ (COMILLA .*? COMILLA | COMSIMPLE .*? COMSIMPLE) PARDER;
 

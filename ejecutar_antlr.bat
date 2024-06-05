@@ -1,0 +1,2 @@
+java -jar C:\Users\Manu\Downloads\antlr-4.13.1-complete.jar -Dlanguage=Java -message-format antlr -o "c:\Users\Manu\OneDrive - UNIVERSIDAD BLAS PASCAL\Estudios\UBP\9no SEMESTRE\TC\Parciales\Parcial 2\BaseCompiladores\src\main\java\compiladores" -listener -visitor -Xexact-output-dir "c:\Users\Manu\OneDrive - UNIVERSIDAD BLAS PASCAL\Estudios\UBP\9no SEMESTRE\TC\Parciales\Parcial 2\BaseCompiladores\src\main\java\compiladores\compiladores.g4"
+

@@ -73,6 +73,7 @@ instrucciones: instruccion*;
 instruccion:
 	declaracion
 	| asignacion
+	| bloque
 	| ciclo
 	| if
 	| for

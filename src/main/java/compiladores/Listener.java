@@ -133,4 +133,53 @@ public class Listener extends compiladoresBaseListener {
             this.symbolTable.addSymbol(name, function);
         }
     }
+
+    @Override
+    public void enterBloque(BloqueContext ctx) {
+        System.out.println("Entering Bloque");
+        this.symbolTable.addScope();
+    }
+
+    @Override
+    public void exitBloque(BloqueContext ctx) {
+        System.out.println("Exiting Bloque");
+        this.symbolTable.removeScope();
+
+        if (!ctx.getChild(0).getText().equals("{")) {
+            System.out.println("Error: Missing opening curly brace");
+            this.errors++;
+        }
+        if(!ctx.getChild(ctx.getChildCount() - 1).getText().equals("}")){
+            System.out.println("Error: Missing closing curly brace");
+            this.errors++;
+        }
+    }
+
+    @Override
+    public void exitRetorno(RetornoContext ctx) {
+        System.out.println("Exiting Retorno");
+
+        if (!ctx.getChild(0).getText().equals("return")) {
+            System.out.println("Error: Missing return keyword");
+            this.errors++;
+        }
+        if (!ctx.getChild(ctx.getChildCount() - 1).getText().equals(";")) {
+            System.out.println("Error: Missing semicolon");
+            this.errors++;
+        }
+    }
+
+    @Override
+    public void exitCondicion(CondicionContext ctx) {
+        System.out.println("Exiting Condicion");
+
+        if (!ctx.getChild(0).getText().equals("if")) {
+            System.out.println("Error: Missing if keyword");
+            this.errors++;
+        }
+        if (!ctx.getChild(2).getText().equals(")")) {
+            System.out.println("Error: Missing closing parenthesis");
+            this.errors++;
+        }
+    }
 }

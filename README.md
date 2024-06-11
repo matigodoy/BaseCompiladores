@@ -1,46 +1,47 @@
-# Proyecto de Análisis y Representación de Gramáticas con ANTLR
+# Proyecto de Validación Sintáctica y Semántica con ANTLR4
 
 ## Descripción
 
-Este proyecto tiene como objetivo la creación de un conjunto de reglas gramaticales, sintácticas y analíticas para interpretar cadenas de texto como si fueran código de un lenguaje de programación. Utilizando ANTLR, desarrollamos una serie de métodos en Java que definen cómo interpretar las entradas de texto. Como resultado, el sistema es capaz de analizar y representar visualmente cómo se procesan las entradas.
-
-Por ejemplo, para un lenguaje similar a C++, el sistema sabe que una declaración `if` debe comenzar con la palabra clave `if`, seguida de una condición entre paréntesis `()`, y puede opcionalmente contener llaves `{}` si es de una sola línea.
-
-## Características
-
-- Definición de reglas gramaticales y sintácticas utilizando ANTLR.
-- Análisis de cadenas de texto basadas en las reglas definidas.
-- Representación visual del proceso de análisis.
-- Soporte para estructuras comunes de lenguajes de programación como `if`, `for`, `while`, entre otros.
-
-## Requisitos
-
-- Java 8 o superior.
-- ANTLR 4.
+Este proyecto tiene como objetivo desarrollar una herramienta que valide la sintaxis y la semántica de un input basado en reglas gramaticales definidas previamente. Utilizando ANTLR4, se genera un árbol de sintaxis para las reglas establecidas en un archivo .g4 y, mediante la implementación de un caminante, un visitor y una tabla de símbolos, se validan los errores presentes en el input proporcionado, señalando los errores de manera precisa.
 
 ## Objetivo del Proyecto
 
-El objetivo de este proyecto es permitir la interpretación y análisis de cadenas de texto como código de un lenguaje de programación. El sistema debe ser capaz de:
+El objetivo principal de este proyecto es crear una herramienta similar a un compilador que sea capaz de identificar y reportar errores sintácticos y semánticos en un input dado. La herramienta debe ser capaz de:
 
-1. Leer una cadena de texto de entrada.
-2. Aplicar reglas gramaticales y sintácticas definidas.
-3. Generar una representación visual del proceso de análisis, mostrando cómo se interpreta cada parte del texto según las reglas definidas.
+- Analizar el input basado en reglas gramaticales.
+- Construir un árbol de sintaxis utilizando ANTLR4.
+- Utilizar una tabla de símbolos para gestionar y verificar las declaraciones.
+- Reportar los errores encontrados indicando la línea y la indole del error.
+
+## Características
+
+- **Análisis Sintáctico**: Construcción de un árbol de sintaxis a partir de reglas gramaticales definidas en ANTLR4.
+- **Validación Semántica**: Uso de un visitor y una tabla de símbolos para validar semánticamente el input.
+- **Detección de Errores**: Identificación y reporte de errores sintácticos y semánticos con información detallada sobre el tipo de error y su ubicación.
+- **Extensibilidad**: Fácilmente extensible para soportar nuevas reglas gramaticales y tipos de errores.
+
+## Requisitos
+
+Para poder ejecutar este proyecto, necesitas tener instalados los siguientes componentes:
+
+- [Java JDK 8 o superior](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [ANTLR4](https://www.antlr.org/download.html)
 
 ## Instalación
 
-1. Clona este repositorio:
-   ```sh
-   git clone https://github.com/matigodoy/BaseCompiladores.git
+Sigue estos pasos para configurar y ejecutar el proyecto:
+
+1. **Clonar el repositorio**:
+    ```bash
+    git clone https://github.com/matigodoy/BaseCompiladores.git
+    ```
 
 ## Modo de Uso
 
-1. El usuario introduce una cadena de texto que representa un fragmento de código.
-2. El sistema utiliza ANTLR para analizar la cadena de texto de acuerdo con las reglas gramaticales y sintácticas definidas en el proyecto.
-3. Durante el análisis, el sistema genera una representación visual del proceso, mostrando cómo se interpretan las diferentes partes del código.
+Para ejecutar la herramienta y validar un input, sigue estos pasos:
 
-### Ejemplo
+1. **Proporciona el input a validar**: Puedes hacerlo escribiendo directamente el input en un archivo de texto.
 
-- **Entrada**: `if (x > 0) y = 1;`
-- **Salida**: Una representación visual del análisis que muestra la estructura del `if` con su condición y la sentencia que ejecuta.
+2. **Ejecuta la herramienta**:
 
-
+3. **Revisa los errores**: La herramienta reportará cualquier error sintáctico o semántico encontrado.

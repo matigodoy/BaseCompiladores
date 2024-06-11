@@ -1,6 +1,6 @@
 package compiladores;
 
-public class Visitor extends compiladoresBaseVisitor<String> {
+public class Caminante extends compiladoresBaseVisitor<String> {
     private Integer assignments = 0;
 
     @Override

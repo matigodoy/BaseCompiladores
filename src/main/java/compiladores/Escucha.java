@@ -3,6 +3,8 @@ package compiladores;
 import compiladores.tools.Function;
 import compiladores.tools.Symbol;
 import compiladores.tools.Variable;
+
+import org.antlr.v4.parse.ANTLRParser.qid_return;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -11,9 +13,9 @@ import compiladores.compiladoresParser.*;
 
 import java.util.ArrayList;
 
-public class Listener extends compiladoresBaseListener {
+public class Escucha extends compiladoresBaseListener {
 
-    //region Variables
+    // region Variables
 
     private Integer declarations = 0;
     private Integer errors = 0;
@@ -21,22 +23,23 @@ public class Listener extends compiladoresBaseListener {
     private Integer tokens = 0;
     private final Symbol symbolTable = Symbol.getInstance();
 
-    //endregion
+    // endregion
 
-    //region Methods
+    // region Methods
 
     @Override
     public void enterPrograma(ProgramaContext ctx) {
+        super.enterPrograma(ctx);
         System.out.println("Entering Programa");
-        this.symbolTable.addScope();
+        symbolTable.addScope();
     }
 
     @Override
     public void exitPrograma(ProgramaContext ctx) {
+        super.exitPrograma(ctx);
         System.out.println("Exiting Programa");
-        this.symbolTable.removeScope();
+        symbolTable.removeScope();
 
-        System.out.println("Declarations: " + this.declarations);
         System.out.println("Errors: " + this.errors);
         System.out.println("Nodes: " + this.nodes);
         System.out.println("Tokens: " + this.tokens);
@@ -44,49 +47,61 @@ public class Listener extends compiladoresBaseListener {
 
     @Override
     public void enterEveryRule(ParserRuleContext ctx) {
+        super.enterEveryRule(ctx);
         this.nodes++;
     }
 
     @Override
     public void visitTerminal(TerminalNode node) {
+        super.visitTerminal(node);
         this.tokens++;
     }
 
     @Override
     public void visitErrorNode(ErrorNode node) {
+        super.visitErrorNode(node);
         this.errors++;
     }
 
     @Override
     public void exitDeclaracion(DeclaracionContext ctx) {
-        this.declarations++;
+        super.exitDeclaracion(ctx);
         System.out.println("Exiting Declaracion");
-
-        String name = ctx.ID().getText();
-
-        if(this.symbolTable.containsSymbol(name)) {
-            System.out.println("Error: Variable " + name + " already declared");
-            this.errors++;
-        } else {
+        System.out.println("ctx: " + ctx.getText());
+        System.out.println("ctxId: " + ctx.ID());
+        if (ctx.ID() != null) {
+            String name = ctx.ID().getText();
             String type = ctx.getChild(0).getText();
-            boolean isInitialized = !(ctx.getChild(2).getText().isBlank());
-            Variable variable = new Variable(name, type, isInitialized, false);
-            this.symbolTable.addSymbol(name, variable);
+            boolean initialized = ctx.getChildCount() > 3;
+            Variable variable = new Variable(name, type, false, initialized);
+
+            System.out.println("symbolTable: " + symbolTable);
+
+            if (symbolTable.containsSymbol(name)) {
+                System.out.println("Error: Variable " + name + " already declared");
+                this.errors++;
+            } else {
+                symbolTable.addSymbol(name, variable);
+                System.out.println("symbolTable: " + symbolTable.getSymbol(name).get().getName());
+                System.out.println("symbolTable: " + symbolTable);
+                this.declarations++;
+            }
         }
+
     }
 
     @Override
     public void exitAsignacion(AsignacionContext ctx) {
+        super.exitAsignacion(ctx);
         System.out.println("Exiting Asignacion");
 
-        if(ctx.ID() != null){
-            Variable symbol =symbolTable.getSymbol(ctx.ID().getText()).orElse(null);
+        if (ctx.ID() != null) {
+            Variable symbol = symbolTable.getSymbol(ctx.ID().getText()).orElse(null);
 
-            if(symbol == null){
+            if (symbol == null) {
                 System.out.println("Error: Variable " + ctx.ID().getText() + " not declared");
                 this.errors++;
-            }
-            else if (!symbol.getInitialized()){
+            } else if (!symbol.getInitialized()) {
                 System.out.println("Error: Variable " + ctx.ID().getText() + " not initialized");
                 this.errors++;
             }
@@ -95,24 +110,25 @@ public class Listener extends compiladoresBaseListener {
 
     @Override
     public void exitImprimir(ImprimirContext ctx) {
+        super.exitImprimir(ctx);
         System.out.println("Exiting Imprimir");
     }
 
     @Override
     public void exitLlamadaFuncion(LlamadaFuncionContext ctx) {
-        if(ctx.ID() != null){
-            Variable symbol =symbolTable.getSymbol(ctx.ID().getText()).orElse(null);
+        super.exitLlamadaFuncion(ctx);
+        if (ctx.ID() != null) {
+            Variable symbol = symbolTable.getSymbol(ctx.ID().getText()).orElse(null);
 
-            if(symbol == null){
+            if (symbol == null) {
                 System.out.println("Error: Variable " + ctx.ID().getText() + " not declared");
                 this.errors++;
-            }
-            else if (!symbol.getInitialized()){
+            } else if (!symbol.getInitialized()) {
                 System.out.println("Error: Variable " + ctx.ID().getText() + " not initialized");
                 this.errors++;
             }
         }
-        if(!ctx.getChild(ctx.getChildCount() - 1).getText().equals(";")){
+        if (!ctx.getChild(ctx.getChildCount() - 1).getText().equals(";")) {
             System.out.println("Error: Missing semicolon");
             this.errors++;
         }
@@ -120,36 +136,39 @@ public class Listener extends compiladoresBaseListener {
 
     @Override
     public void exitFuncion(FuncionContext ctx) {
+        super.exitFuncion(ctx);
         System.out.println("Exiting Funcion");
 
         String name = ctx.ID().getText();
 
-        if(this.symbolTable.containsSymbol(name)) {
+        if (symbolTable.containsSymbol(name)) {
             System.out.println("Error: Function " + name + " already declared");
             this.errors++;
         } else {
             String type = ctx.getChild(0).getText();
             Function function = new Function(name, type, false, false, new ArrayList<>());
-            this.symbolTable.addSymbol(name, function);
+            symbolTable.addSymbol(name, function);
         }
     }
 
     @Override
     public void enterBloque(BloqueContext ctx) {
+        super.enterBloque(ctx);
         System.out.println("Entering Bloque");
-        this.symbolTable.addScope();
+        symbolTable.addScope();
     }
 
     @Override
     public void exitBloque(BloqueContext ctx) {
+        super.exitBloque(ctx);
         System.out.println("Exiting Bloque");
-        this.symbolTable.removeScope();
+        symbolTable.removeScope();
 
         if (!ctx.getChild(0).getText().equals("{")) {
             System.out.println("Error: Missing opening curly brace");
             this.errors++;
         }
-        if(!ctx.getChild(ctx.getChildCount() - 1).getText().equals("}")){
+        if (!ctx.getChild(ctx.getChildCount() - 1).getText().equals("}")) {
             System.out.println("Error: Missing closing curly brace");
             this.errors++;
         }
@@ -157,6 +176,7 @@ public class Listener extends compiladoresBaseListener {
 
     @Override
     public void exitRetorno(RetornoContext ctx) {
+        super.exitRetorno(ctx);
         System.out.println("Exiting Retorno");
 
         if (!ctx.getChild(0).getText().equals("return")) {
@@ -171,6 +191,7 @@ public class Listener extends compiladoresBaseListener {
 
     @Override
     public void exitCondicion(CondicionContext ctx) {
+        super.exitCondicion(ctx);
         System.out.println("Exiting Condicion");
 
         if (!ctx.getChild(0).getText().equals("if")) {
@@ -182,4 +203,21 @@ public class Listener extends compiladoresBaseListener {
             this.errors++;
         }
     }
+
+    @Override
+    public void exitCiclo(CicloContext ctx) {
+        super.exitCiclo(ctx);
+        System.out.println("Exiting Ciclo");
+
+        if (!ctx.getChild(0).getText().equals("while")) {
+            System.out.println("Error: Missing while keyword");
+            this.errors++;
+        }
+        if (!ctx.getChild(2).getText().equals(")")) {
+            System.out.println("Error: Missing closing parenthesis");
+            this.errors++;
+        }
+    }
+
+    // endregion
 }

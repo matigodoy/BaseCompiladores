@@ -50,6 +50,36 @@ public interface compiladoresListener extends ParseTreeListener {
 	 */
 	void exitDeclaracion(compiladoresParser.DeclaracionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link compiladoresParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void enterTipo(compiladoresParser.TipoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link compiladoresParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void exitTipo(compiladoresParser.TipoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link compiladoresParser#inicializacion_variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterInicializacion_variable(compiladoresParser.Inicializacion_variableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link compiladoresParser#inicializacion_variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitInicializacion_variable(compiladoresParser.Inicializacion_variableContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link compiladoresParser#lista_identificadores}.
+	 * @param ctx the parse tree
+	 */
+	void enterLista_identificadores(compiladoresParser.Lista_identificadoresContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link compiladoresParser#lista_identificadores}.
+	 * @param ctx the parse tree
+	 */
+	void exitLista_identificadores(compiladoresParser.Lista_identificadoresContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link compiladoresParser#asignacion}.
 	 * @param ctx the parse tree
 	 */
@@ -130,15 +160,35 @@ public interface compiladoresListener extends ParseTreeListener {
 	 */
 	void exitCondicion(compiladoresParser.CondicionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link compiladoresParser#condiciones}.
+	 * Enter a parse tree produced by {@link compiladoresParser#comparacion}.
 	 * @param ctx the parse tree
 	 */
-	void enterCondiciones(compiladoresParser.CondicionesContext ctx);
+	void enterComparacion(compiladoresParser.ComparacionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link compiladoresParser#condiciones}.
+	 * Exit a parse tree produced by {@link compiladoresParser#comparacion}.
 	 * @param ctx the parse tree
 	 */
-	void exitCondiciones(compiladoresParser.CondicionesContext ctx);
+	void exitComparacion(compiladoresParser.ComparacionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link compiladoresParser#comparador}.
+	 * @param ctx the parse tree
+	 */
+	void enterComparador(compiladoresParser.ComparadorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link compiladoresParser#comparador}.
+	 * @param ctx the parse tree
+	 */
+	void exitComparador(compiladoresParser.ComparadorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link compiladoresParser#listado_comparacion}.
+	 * @param ctx the parse tree
+	 */
+	void enterListado_comparacion(compiladoresParser.Listado_comparacionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link compiladoresParser#listado_comparacion}.
+	 * @param ctx the parse tree
+	 */
+	void exitListado_comparacion(compiladoresParser.Listado_comparacionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link compiladoresParser#retorno}.
 	 * @param ctx the parse tree

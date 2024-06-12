@@ -11,7 +11,7 @@ fragment DIGITO: [0-9];
 WS: [ \t\n\r]+ -> skip;
 COMILLA: '"';
 COMSIMPLE: '\'';
-fragment LETRA: [a-zA-Z];
+fragment LETRA: [A-Za-z];
 PUNTOCOMA: ';';
 COMA: ',';
 LLAVEIZQ: '{';
@@ -83,9 +83,16 @@ instruccion:
 	| retorno;
 
 declaracion:
-	TDATO ID PUNTOCOMA?
-	| TDATO asignacion
-	| TDATO ID COMA;
+	tipo ID inicializacion_variable lista_identificadores PUNTOCOMA
+	| tipo ID PUNTOCOMA;
+
+tipo: TDATO;
+
+inicializacion_variable: IGUAL NUMERO |;
+
+lista_identificadores:
+	COMA ID inicializacion_variable lista_identificadores
+	|;
 
 asignacion:
 	ID IGUAL expresion
@@ -101,24 +108,28 @@ termino: factor f;
 t:
 	SUMA termino t
 	| RESTA termino t
-	// | MULTIPLICACION termino t | DIVISION termino t | MODULO termino t
+	| MULTIPLICACION termino t
+	| DIVISION termino t
+	| MODULO termino t
 	|;
 
 factor: NUMERO | ID | PARIZQ exp PARDER;
 
 f: OPERADOR factor f | INCREMENTO | DECREMENTO |;
 
-condicion: (ID | NUMERO) MAYOR (ID | NUMERO)
-	| (ID | NUMERO) MENOR (ID | NUMERO)
-	| (ID | NUMERO) MAYORIGUAL (ID | NUMERO)
-	| (ID | NUMERO) MENORIGUAL (ID | NUMERO)
-	| (ID | NUMERO) DIFERENTE (ID | NUMERO)
-	| (ID | NUMERO) IGUALDAD (ID | NUMERO)
-	| (ID | NUMERO) LOGICO (ID | NUMERO)
-	| NOT (ID | NUMERO)
-	| PARIZQ condicion PARDER;
+condicion: PARIZQ comparacion listado_comparacion PARDER;
 
-condiciones: condicion LOGICO condiciones | condicion;
+comparacion: factor comparador factor;
+
+comparador:
+	MAYOR
+	| MENOR
+	| MAYORIGUAL
+	| MENORIGUAL
+	| IGUALDAD
+	| DIFERENTE;
+
+listado_comparacion: LOGICO comparacion listado_comparacion |;
 
 retorno:
 	RETURN (ID | NUMERO) PUNTOCOMA
@@ -129,13 +140,13 @@ bloque: LLAVEIZQ instruccion LLAVEDER;
 
 ciclo: WHILE PARIZQ condicion PARDER (bloque | instruccion);
 
-if: IF PARIZQ condicion PARDER (bloque | instruccion) else?;
+if: IF condicion (bloque | instruccion) else?;
 
 else: ELSE (bloque | instruccion);
 
 for:
 	FOR PARIZQ ((declaracion | asignacion) | PUNTOCOMA) (
-		condiciones
+		comparacion
 	) PUNTOCOMA asignacion? PARDER (bloque | instruccion);
 
 declaracionParametros: declaracion (declaracion)* |;

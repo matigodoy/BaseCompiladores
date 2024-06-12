@@ -37,6 +37,24 @@ public interface compiladoresVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaracion(compiladoresParser.DeclaracionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link compiladoresParser#tipo}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTipo(compiladoresParser.TipoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link compiladoresParser#inicializacion_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInicializacion_variable(compiladoresParser.Inicializacion_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link compiladoresParser#lista_identificadores}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLista_identificadores(compiladoresParser.Lista_identificadoresContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link compiladoresParser#asignacion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -85,11 +103,23 @@ public interface compiladoresVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondicion(compiladoresParser.CondicionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link compiladoresParser#condiciones}.
+	 * Visit a parse tree produced by {@link compiladoresParser#comparacion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCondiciones(compiladoresParser.CondicionesContext ctx);
+	T visitComparacion(compiladoresParser.ComparacionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link compiladoresParser#comparador}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComparador(compiladoresParser.ComparadorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link compiladoresParser#listado_comparacion}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListado_comparacion(compiladoresParser.Listado_comparacionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link compiladoresParser#retorno}.
 	 * @param ctx the parse tree

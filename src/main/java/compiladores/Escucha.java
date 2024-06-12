@@ -30,14 +30,12 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void enterPrograma(ProgramaContext ctx) {
         super.enterPrograma(ctx);
-        System.out.println("Entering Programa");
         symbolTable.addScope();
     }
 
     @Override
     public void exitPrograma(ProgramaContext ctx) {
         super.exitPrograma(ctx);
-        System.out.println("Exiting Programa");
         symbolTable.removeScope();
 
         System.out.println("Errors: " + this.errors);
@@ -66,24 +64,18 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitDeclaracion(DeclaracionContext ctx) {
         super.exitDeclaracion(ctx);
-        System.out.println("Exiting Declaracion");
-        System.out.println("ctx: " + ctx.getText());
-        System.out.println("ctxId: " + ctx.ID());
+
         if (ctx.ID() != null) {
             String name = ctx.ID().getText();
             String type = ctx.getChild(0).getText();
             boolean initialized = ctx.getChildCount() > 3;
             Variable variable = new Variable(name, type, false, initialized);
 
-            System.out.println("symbolTable: " + symbolTable);
-
             if (symbolTable.containsSymbol(name)) {
                 System.out.println("Error: Variable " + name + " already declared");
                 this.errors++;
             } else {
                 symbolTable.addSymbol(name, variable);
-                System.out.println("symbolTable: " + symbolTable.getSymbol(name).get().getName());
-                System.out.println("symbolTable: " + symbolTable);
                 this.declarations++;
             }
         }
@@ -93,7 +85,6 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitAsignacion(AsignacionContext ctx) {
         super.exitAsignacion(ctx);
-        System.out.println("Exiting Asignacion");
 
         if (ctx.ID() != null) {
             Variable symbol = symbolTable.getSymbol(ctx.ID().getText()).orElse(null);
@@ -111,7 +102,6 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitImprimir(ImprimirContext ctx) {
         super.exitImprimir(ctx);
-        System.out.println("Exiting Imprimir");
     }
 
     @Override
@@ -137,7 +127,6 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitFuncion(FuncionContext ctx) {
         super.exitFuncion(ctx);
-        System.out.println("Exiting Funcion");
 
         String name = ctx.ID().getText();
 
@@ -154,14 +143,12 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void enterBloque(BloqueContext ctx) {
         super.enterBloque(ctx);
-        System.out.println("Entering Bloque");
         symbolTable.addScope();
     }
 
     @Override
     public void exitBloque(BloqueContext ctx) {
         super.exitBloque(ctx);
-        System.out.println("Exiting Bloque");
         symbolTable.removeScope();
 
         if (!ctx.getChild(0).getText().equals("{")) {
@@ -177,7 +164,6 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitRetorno(RetornoContext ctx) {
         super.exitRetorno(ctx);
-        System.out.println("Exiting Retorno");
 
         if (!ctx.getChild(0).getText().equals("return")) {
             System.out.println("Error: Missing return keyword");
@@ -192,13 +178,12 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitCondicion(CondicionContext ctx) {
         super.exitCondicion(ctx);
-        System.out.println("Exiting Condicion");
 
-        if (!ctx.getChild(0).getText().equals("if")) {
-            System.out.println("Error: Missing if keyword");
+        if (!ctx.getChild(0).getText().equals("(")) {
+            System.out.println("Error: Missing opening parenthesis");
             this.errors++;
         }
-        if (!ctx.getChild(2).getText().equals(")")) {
+        if (!ctx.getChild(3).getText().equals(")")) {
             System.out.println("Error: Missing closing parenthesis");
             this.errors++;
         }
@@ -207,7 +192,6 @@ public class Escucha extends compiladoresBaseListener {
     @Override
     public void exitCiclo(CicloContext ctx) {
         super.exitCiclo(ctx);
-        System.out.println("Exiting Ciclo");
 
         if (!ctx.getChild(0).getText().equals("while")) {
             System.out.println("Error: Missing while keyword");

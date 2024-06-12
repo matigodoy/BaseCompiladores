@@ -4,7 +4,6 @@ import compiladores.tools.Function;
 import compiladores.tools.Symbol;
 import compiladores.tools.Variable;
 
-import org.antlr.v4.parse.ANTLRParser.qid_return;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
